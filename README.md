@@ -6,7 +6,7 @@ Aplicação web que simula um quadro **Kanban** para gerenciamento de tarefas, c
 
 ## 🚀 Acesse o projeto (se tiver deploy)
 
-> ⚠️ *Você pode adicionar aqui um link Vercel/Netlify se houver deploy.*
+> ⚠️ _Você pode adicionar aqui um link Vercel/Netlify se houver deploy._
 
 ---
 
@@ -32,10 +32,12 @@ Aplicação web que simula um quadro **Kanban** para gerenciamento de tarefas, c
 ## 📷 Capturas de Tela
 
 ### 🔹 Quadro Kanban em Ação
-![Kanban Board](./6e5b0ba1-601e-484f-b593-d28755edff16.png)
+
+![Kanban Board](./public/assets/image/kanban-board.png)
 
 ### 🔹 Modal de Nova Tarefa
-![Modal Nova Tarefa](./1d43c779-aa17-4138-b9da-8738cb2d1a3c.png)
+
+![Modal Nova Tarefa](./public/assets/image/modal-tarefa.png)
 
 ---
 
