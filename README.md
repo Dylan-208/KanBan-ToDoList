@@ -1,69 +1,86 @@
-# React + TypeScript + Vite
+# 📌 Kanban To-Do List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web que simula um quadro **Kanban** para gerenciamento de tarefas, com foco em organização, produtividade e simplicidade de uso. Desenvolvido utilizando React, Styled-Components e Drag-and-Drop.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Acesse o projeto (se tiver deploy)
 
-## Expanding the ESLint configuration
+> ⚠️ *Você pode adicionar aqui um link Vercel/Netlify se houver deploy.*
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tecnologias Utilizadas
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- [React](https://reactjs.org/)
+- [Styled-Components](https://styled-components.com/)
+- [React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)
+- [Vite](https://vitejs.dev/)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🎯 Funcionalidades
+
+- ✅ Criar tarefas
+- 🗂️ Organizar tarefas por colunas (To Do, Doing, Done)
+- 🖱️ Drag and Drop para reordenar e mover tarefas entre colunas
+- 🧼 Interface limpa e responsiva
+- 🧠 Armazenamento local (opcional)
+
+---
+
+## 📷 Captura de Tela
+
+*(Adicione uma imagem do projeto aqui, exemplo abaixo)*
+
+```
+![Kanban Screenshot](./screenshot.png)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📦 Como rodar o projeto localmente
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Clone o repositório
+git clone https://github.com/Dylan-208/KanBan-ToDoList
+
+# Acesse a pasta do projeto
+cd KanBan-ToDoList
+
+# Instale as dependências
+npm install
+
+# Inicie o servidor de desenvolvimento
+npm run dev
 ```
+
+---
+
+## 📁 Estrutura do Projeto (exemplo)
+
+```
+KanBan-ToDoList/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   ├── styles/
+│   └── App.jsx
+├── vite.config.js
+└── README.md
+```
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Dylan Santos**  
+🔗 [github.com/Dylan-208](https://github.com/Dylan-208)
+
+---
+
+## 📜 Licença
+
+Este projeto está licenciado sob a **MIT License** – veja o arquivo [LICENSE](LICENSE) para mais detalhes.
