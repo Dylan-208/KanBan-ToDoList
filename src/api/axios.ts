@@ -5,7 +5,7 @@ let dados = [
     id: "1",
     titulo: "JavaScript",
     description:
-      "Estudar JS para auxiliar na carreira de dev qwkdjwpijdipqjdiqwjdijdi",
+      "Aprender fundamentos de JavaScript para criar interações e lógica no front-end.",
     relevance: "importante",
     status: "to_do",
   },
@@ -13,7 +13,7 @@ let dados = [
     id: "2",
     titulo: "Node.js",
     description:
-      "Estudar JS para auxiliar na carreira de dev qwkdjwpijdisadasdasdasd sdsadasda asdasdasd sadsadasdsasdemdkmwe kdmweklmdlwekdmwelkdmwledmwe",
+      "Estudar Node.js para desenvolver APIs, servidores e trabalhar com JavaScript no back-end.",
     relevance: "importante",
     status: "to_do",
   },
@@ -21,14 +21,15 @@ let dados = [
     id: "3",
     titulo: "React",
     description:
-      "Estudar JS para auxiliar na carreira de dev qwkdjwpijdipqjdiqwjdijdi",
+      "Aprender React para construir interfaces modernas, reutilizáveis e reativas no front-end.",
     relevance: "irrelevante",
     status: "to_do",
   },
   {
     id: "4",
     titulo: "Portifólio",
-    description: "Criar portifólio online",
+    description:
+      "Criar portfólio online para apresentar projetos e demonstrar habilidades como desenvolvedor.",
     relevance: "padrão",
     status: "in_progress",
   },
@@ -36,7 +37,7 @@ let dados = [
     id: "5",
     titulo: "Python",
     description:
-      "Estudar JS para auxiliar na carreira de dev qwkdjwpijdisadasdasdasd sdsadasda asdasdasd sadsadasdsasdemdkmwe kdmweklmdlwekdmwelkdmwledmwe",
+      "Aprender Python para automação, análise de dados e construção de scripts úteis.",
     relevance: "importante",
     status: "done",
   },

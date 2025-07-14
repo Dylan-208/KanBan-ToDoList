@@ -67,7 +67,7 @@ function Hearder() {
           value={search}
           placeholder="Pesquise sua tarefa"
         />
-        {!token && (
+        {token && (
           <SideUser>
             {/*//TODO Add iniciais do usuário*/}
             <DivPhoto></DivPhoto>
