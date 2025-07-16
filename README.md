@@ -6,7 +6,7 @@ Aplicação web que simula um quadro **Kanban** para gerenciamento de tarefas, c
 
 ## 🚀 Acesse o projeto (se tiver deploy)
 
-> ⚠️ _Você pode adicionar aqui um link Vercel/Netlify se houver deploy._
+👉 [kanban-to-do-list.vercel.app](https://kanban-to-do-list-rho.vercel.app/)
 
 ---
 

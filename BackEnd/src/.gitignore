@@ -1,0 +1,12 @@
+node_modules
+
+.env
+
+*.log
+
+.vscode/
+
+Thumbs.db
+
+dist/
+build/
