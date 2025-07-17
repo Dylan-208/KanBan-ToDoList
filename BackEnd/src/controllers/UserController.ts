@@ -29,6 +29,18 @@ class UserController {
     }
   }
 
+  async getById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const result = await userServiceFactory.getById(id);
+
+      res.json(result);
+    } catch (err: any) {
+      throw res.json({ error: err.message });
+    }
+  }
+
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;

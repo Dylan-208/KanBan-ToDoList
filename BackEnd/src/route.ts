@@ -9,6 +9,8 @@ router.get("/user", userControllerFactory.getAll);
 
 router.put("/user/:id", userControllerFactory.update);
 
+router.get("/user/:id", userControllerFactory.getById);
+
 router.delete("/user/:id", userControllerFactory.delete);
 
 export default router;

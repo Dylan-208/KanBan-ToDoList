@@ -1,11 +1,13 @@
 import { IUser } from "../models/User";
 import { userRepositoryFactoryInMemory } from "../Factories/UserRepositoryFactoryInMemory";
+import UserRepository from "../repositories/UserRepository";
 
 class UserService {
+  constructor(private _userRepository: UserRepository) {}
   async create(data: IUser) {
-    const verifyEmail = await userRepositoryFactoryInMemory.getByEmail(data);
+    const verifyEmail = await this._userRepository.getByEmail(data.email);
     if (!verifyEmail) {
-      const result = await userRepositoryFactoryInMemory.create(data);
+      const result = await this._userRepository.create(data);
       return result;
     }
 
@@ -13,29 +15,33 @@ class UserService {
   }
 
   async update(data: IUser, id: string) {
-    const verifyUser = await userRepositoryFactoryInMemory.getById(id);
+    const verifyUser = await this._userRepository.getById(id);
 
     if (!verifyUser) {
       throw new Error("Usuário inexistente no banco de dados.");
     }
 
-    const result = await userRepositoryFactoryInMemory.update(data, id);
+    const result = await this._userRepository.update(id, data);
 
     return result;
   }
 
   async getAll() {
-    return userRepositoryFactoryInMemory.getAll();
+    return await this._userRepository.getAll();
+  }
+
+  async getById(id: string) {
+    return await this._userRepository.getById(id);
   }
 
   async delete(id: string) {
-    const verifyId = await userRepositoryFactoryInMemory.getById(id);
+    const verifyId = await this._userRepository.getById(id);
 
     if (!verifyId) {
       throw new Error("Usuário inexistente no banco de dados");
     }
 
-    const result = await userRepositoryFactoryInMemory.delete(id);
+    const result = await this._userRepository.delete(id);
 
     return result;
   }
