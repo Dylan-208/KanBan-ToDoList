@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Tasks } from "../types/interfaces";
+import axios from "axios";
 
 let dados = [
   {
@@ -43,6 +45,16 @@ let dados = [
   },
 ];
 
+interface ILogin {
+  email: string;
+  password: string;
+}
+
+interface ILoginResponse {
+  token: string;
+  refreshToken: string;
+}
+
 export const getTasksAxios = () => {
   return {
     data: dados,
@@ -69,3 +81,21 @@ export const deleteTaskAxios = (id: string) => {
   dados = dados.filter((i) => i.id !== id);
   return dados;
 };
+
+export async function loginAPIAxios(data: ILogin) {
+  try {
+    const result = await axios.post<ILoginResponse>(
+      `${import.meta.env.VITE_URL_BASE}/login`,
+      {
+        email: data.email,
+        password: data.password,
+      }
+    );
+
+    if (!result.data.token) throw new Error("Email ou senha inválidos");
+
+    return result;
+  } catch (err: any) {
+    throw new Error(`Error: ${err.message}`);
+  }
+}

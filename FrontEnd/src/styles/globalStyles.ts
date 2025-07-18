@@ -13,13 +13,11 @@ export const GlobalStyles = createGlobalStyle`
 }
 
 
-* {
-
-margin: 0;
-top: 0;
-padding:0;
-box-sizing: border-box;
-}
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
 html, body{
     height: 100%;

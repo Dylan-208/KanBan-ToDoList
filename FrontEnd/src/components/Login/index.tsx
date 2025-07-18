@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   ButtonBack,
@@ -19,6 +20,8 @@ import {
   TituloEmail,
 } from "./style";
 import { useNavigate } from "react-router";
+import { loginAPIAxios } from "../../api/axios";
+import Cookies from "js-cookie";
 
 type User = {
   name: string;
@@ -36,6 +39,24 @@ function Login() {
     password: "",
   });
   const navigate = useNavigate();
+
+  async function loginAPI() {
+    try {
+      const user = { email, password };
+
+      const result = await loginAPIAxios(user);
+      console.log(result);
+
+      const { token, refreshToken } = result.data;
+
+      Cookies.set("token", token);
+      Cookies.set("RefreshToken", refreshToken);
+
+      console.log("login realizado com sucesso");
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
 
   return (
     <>
@@ -62,32 +83,43 @@ function Login() {
 
           <Container>
             <ContainerLogin $background={!loginSelect}>
-              <DivEmail $side={!loginSelect}>
-                <Iconemail />
-                <LineSeparator />
-                <ContainerEmailAddress>
-                  <TituloEmail>Endereço Email</TituloEmail>
-                  <InputEmail
-                    type="text"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                  />
-                </ContainerEmailAddress>
-              </DivEmail>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  return loginAPI();
+                }}
+              >
+                <DivEmail $side={!loginSelect}>
+                  <Iconemail />
+                  <LineSeparator />
+                  <ContainerEmailAddress>
+                    <TituloEmail>Endereço Email</TituloEmail>
+                    <InputEmail
+                      type="text"
+                      onChange={(e) => setEmail(e.target.value)}
+                      value={email}
+                      required
+                    />
+                  </ContainerEmailAddress>
+                </DivEmail>
 
-              <DivEmail $side={!loginSelect}>
-                <IconPassword />
-                <LineSeparator />
-                <ContainerEmailAddress>
-                  <TituloEmail>Senha Email</TituloEmail>
-                  <InputEmail
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
-                  />
-                </ContainerEmailAddress>
-              </DivEmail>
-              <ButtonEnter $side={!loginSelect}>Continuar</ButtonEnter>
+                <DivEmail $side={!loginSelect}>
+                  <IconPassword />
+                  <LineSeparator />
+                  <ContainerEmailAddress>
+                    <TituloEmail>Senha Email</TituloEmail>
+                    <InputEmail
+                      type="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      value={password}
+                      required
+                    />
+                  </ContainerEmailAddress>
+                </DivEmail>
+                <ButtonEnter type="submit" $side={!loginSelect}>
+                  Continuar
+                </ButtonEnter>
+              </form>
             </ContainerLogin>
 
             <ContainerSingIn $background={loginSelect}>
