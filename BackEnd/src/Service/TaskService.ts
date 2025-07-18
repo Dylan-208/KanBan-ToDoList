@@ -5,7 +5,7 @@ import TaskRepository from "../repositories/TaskRepository";
 class TaskService {
   constructor(private _taskRepository: TaskRepository) {}
 
-  async create(data: ITask) {
+  async create(id: string, data: ITask) {
     const verifyUser = await userRepositoryFactory.getById(
       data.id_user as string
     );

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userControllerFactory } from "./Factories/UserControllerFactory";
 import { taskControllerFactory } from "./Factories/TaskController";
+import { autenticMiddleware } from "./Factories/AutenticMiddleware";
 
 const router = Router();
 
@@ -17,12 +18,12 @@ router.delete("/user/:id", userControllerFactory.delete);
 
 //Tasks
 
-router.get("/task", taskControllerFactory.getAll);
+router.get("/task", autenticMiddleware.user, taskControllerFactory.getAll);
 
-router.post("/task", taskControllerFactory.create);
+router.post("/task", autenticMiddleware.user, taskControllerFactory.create);
 
-router.put("/task", taskControllerFactory.update);
+router.put("/task", autenticMiddleware.user, taskControllerFactory.update);
 
-router.delete("/task", taskControllerFactory.delete);
+router.delete("/task", autenticMiddleware.user, taskControllerFactory.delete);
 
 export default router;

@@ -7,7 +7,10 @@ class TaskController {
     try {
       await addTask.validate(req.body);
 
-      const result = await taskServiceFactory.create(req.body);
+      const result = await taskServiceFactory.create(
+        (req as any).id_user,
+        req.body
+      );
 
       res.json(result);
     } catch (err: any) {
