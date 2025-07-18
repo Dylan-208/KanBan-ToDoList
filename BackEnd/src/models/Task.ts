@@ -1,6 +1,6 @@
 export interface ITask {
   id?: string;
-  id_user?: string;
+  id_user: string;
   titulo: string;
   description: string;
   relevance: string;

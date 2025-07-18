@@ -7,10 +7,9 @@ class TaskController {
     try {
       await addTask.validate(req.body);
 
-      const result = await taskServiceFactory.create(
-        (req as any).id_user,
-        req.body
-      );
+      const { id_user } = req as any;
+
+      const result = await taskServiceFactory.create(id_user, req.body);
 
       res.json(result);
     } catch (err: any) {
@@ -22,9 +21,7 @@ class TaskController {
     try {
       await addTask.validate(req.body);
 
-      const { id_user } = req.body;
-
-      const result = await taskServiceFactory.update(id_user, req.body);
+      const result = await taskServiceFactory.update(req.body);
 
       res.json(result);
     } catch (err: any) {
@@ -46,7 +43,7 @@ class TaskController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const { id_user } = req.body;
+      const { id_user } = req as any;
 
       const result = await taskServiceFactory.getAll(id_user);
 

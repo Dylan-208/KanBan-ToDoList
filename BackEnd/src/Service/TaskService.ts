@@ -5,10 +5,8 @@ import TaskRepository from "../repositories/TaskRepository";
 class TaskService {
   constructor(private _taskRepository: TaskRepository) {}
 
-  async create(id: string, data: ITask) {
-    const verifyUser = await userRepositoryFactory.getById(
-      data.id_user as string
-    );
+  async create(id_user: string, data: ITask) {
+    const verifyUser = await userRepositoryFactory.getById(id_user);
 
     if (!verifyUser) throw new Error("Usuário inexistente");
 
@@ -16,7 +14,7 @@ class TaskService {
     return result;
   }
   //TODO Criar o JWT para verificar a existência do usuário
-  async update(id: string, data: ITask) {
+  async update(data: ITask) {
     const result = await this._taskRepository.update(data.id as string, data);
 
     if (!result) throw new Error("Tarefa inexistente");

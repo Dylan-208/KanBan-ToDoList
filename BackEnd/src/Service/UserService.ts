@@ -2,6 +2,7 @@ import { IUser } from "../models/User";
 import { userRepositoryFactoryInMemory } from "../Factories/UserRepositoryFactoryInMemory";
 import { userRepositoryFactory } from "../Factories/UserRepositoryFactory";
 import UserRepository from "../repositories/UserRepository";
+import { createJWT } from "./helpers/JsonWebToken";
 
 class UserService {
   constructor(private _userRepository: UserRepository) {}
@@ -9,7 +10,11 @@ class UserService {
     const verifyEmail = await this._userRepository.getByEmail(data.email);
     if (!verifyEmail) {
       const result = await this._userRepository.create(data);
-      return result;
+      result.password = "";
+      const token = createJWT(result);
+      return {
+        token: token,
+      };
     }
 
     throw new Error("Email já existente no banco de dados");
