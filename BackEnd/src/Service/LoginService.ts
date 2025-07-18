@@ -21,7 +21,7 @@ class LoginService {
     const dataUser = { id, email };
     const token = createJWT(dataUser);
 
-    return { data: token };
+    return token;
   }
 }
 
