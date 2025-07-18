@@ -1,5 +1,6 @@
 import { IUser } from "../models/User";
 import { userRepositoryFactoryInMemory } from "../Factories/UserRepositoryFactoryInMemory";
+import { userRepositoryFactory } from "../Factories/UserRepositoryFactory";
 import UserRepository from "../repositories/UserRepository";
 
 class UserService {
