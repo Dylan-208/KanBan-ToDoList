@@ -14,8 +14,8 @@ class TaskService {
     return result;
   }
   //TODO Criar o JWT para verificar a existência do usuário
-  async update(data: ITask) {
-    const result = await this._taskRepository.update(data.id as string, data);
+  async update(id_task: string, data: ITask) {
+    const result = await this._taskRepository.update(id_task, data);
 
     if (!result) throw new Error("Tarefa inexistente");
 
@@ -36,6 +36,14 @@ class TaskService {
     if (!result) throw new Error("Nenhuma tarefa cadastrada");
 
     return result;
+
+    return result;
+  }
+
+  async getById(id_task: string) {
+    const result = await this._taskRepository.getById(id_task);
+
+    if (!result) throw new Error("Nenhuma tarefa cadastrada");
 
     return result;
   }

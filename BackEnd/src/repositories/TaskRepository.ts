@@ -28,6 +28,14 @@ class TaskRepository {
       where: { id },
     });
   }
+
+  async getById(id_task: string) {
+    return await prismaClientFactory.task.findFirst({
+      where: {
+        id: id_task,
+      },
+    });
+  }
 }
 
 export default TaskRepository;

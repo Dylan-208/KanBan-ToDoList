@@ -34,9 +34,11 @@ router.post("/refresh", refreshToken);
 
 router.get("/task", autenticMiddleware.user, taskControllerFactory.getAll);
 
+router.get("/task/:id", autenticMiddleware.user, taskControllerFactory.getById);
+
 router.post("/task", autenticMiddleware.user, taskControllerFactory.create);
 
-router.put("/task", autenticMiddleware.user, taskControllerFactory.update);
+router.put("/task/:id", autenticMiddleware.user, taskControllerFactory.update);
 
 router.delete(
   "/task/:id",

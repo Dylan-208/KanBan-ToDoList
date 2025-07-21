@@ -21,8 +21,12 @@ class TaskController {
   async update(req: Request, res: Response) {
     try {
       await addTask.validate(req.body);
+      const { id } = req.params;
 
-      const result = await taskServiceFactory.update(req.body);
+      const { id_user } = req as any;
+      req.body.id_user = id_user;
+
+      const result = await taskServiceFactory.update(id, req.body);
 
       res.json(result);
     } catch (err: any) {
@@ -31,7 +35,6 @@ class TaskController {
   }
 
   async delete(req: Request, res: Response) {
-    console.log("entrou");
     try {
       const { id } = req.params;
 
@@ -48,6 +51,18 @@ class TaskController {
       const { id_user } = req as any;
 
       const result = await taskServiceFactory.getAll(id_user);
+
+      res.json(result);
+    } catch (err: any) {
+      throw res.json({ error: err.message });
+    }
+  }
+
+  async getById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const result = await taskServiceFactory.getById(id);
 
       res.json(result);
     } catch (err: any) {
