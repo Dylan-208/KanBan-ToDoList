@@ -36,8 +36,14 @@ class UserService {
     return await this._userRepository.getAll();
   }
 
-  async getById(id: string) {
-    return await this._userRepository.getById(id);
+  async getById(id_user: string) {
+    const result = await this._userRepository.getById(id_user);
+
+    if (!result) {
+      throw new Error("Usuário inexistente");
+    }
+    const { id, name, email } = result;
+    return { id, name, email };
   }
 
   async delete(id: string) {

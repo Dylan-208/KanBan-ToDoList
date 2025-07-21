@@ -8,6 +8,7 @@ class TaskController {
       await addTask.validate(req.body);
 
       const { id_user } = req as any;
+      req.body.id_user = id_user;
 
       const result = await taskServiceFactory.create(id_user, req.body);
 
@@ -30,8 +31,9 @@ class TaskController {
   }
 
   async delete(req: Request, res: Response) {
+    console.log("entrou");
     try {
-      const { id } = req.body;
+      const { id } = req.params;
 
       const result = await taskServiceFactory.delete(id);
 

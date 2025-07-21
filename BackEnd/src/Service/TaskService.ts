@@ -32,7 +32,6 @@ class TaskService {
 
   async getAll(id_user: string) {
     const result = await this._taskRepository.getAll(id_user);
-    console.log(result);
 
     if (!result) throw new Error("Nenhuma tarefa cadastrada");
 

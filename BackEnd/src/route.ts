@@ -38,6 +38,10 @@ router.post("/task", autenticMiddleware.user, taskControllerFactory.create);
 
 router.put("/task", autenticMiddleware.user, taskControllerFactory.update);
 
-router.delete("/task", autenticMiddleware.user, taskControllerFactory.delete);
+router.delete(
+  "/task/:id",
+  autenticMiddleware.user,
+  taskControllerFactory.delete
+);
 
 export default router;

@@ -4,11 +4,11 @@ import { IUser } from "../../models/User";
 
 dotenv.config();
 
-export function createJWT(
+export async function createJWT(
   data: IUser | { id: string; email: string } | JwtPayload
 ) {
   const token = jwt.sign(data, process.env.JWT_KEY as string, {
-    expiresIn: "15m",
+    expiresIn: "1d",
   });
   const refreshToken = jwt.sign(data, process.env.JWT_REFRESH_KEY as string, {
     expiresIn: "7d",
@@ -16,20 +16,20 @@ export function createJWT(
   return { token, refreshToken };
 }
 
-export function decodeJWT(token: string) {
+export async function decodeJWT(token: string) {
   const decoded = jwt.decode(token);
   return decoded;
 }
 
-export function verifyJWT(token: string) {
+export async function verifyJWT(token: string) {
   const verify = jwt.verify(token, process.env.JWT_KEY as string);
   return verify;
 }
 
-export function verifyRefreshJWT(tokenRefresh: string) {
+export async function verifyRefreshJWT(tokenRefresh: string) {
   const verify = jwt.verify(
     tokenRefresh,
     process.env.JWT_REFRESH_KEY as string
   );
-  return verify;
+  return verify as JwtPayload;
 }

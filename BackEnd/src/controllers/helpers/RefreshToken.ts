@@ -5,19 +5,14 @@ import {
 } from "../../Service/helpers/JsonWebToken";
 import { JwtPayload } from "jsonwebtoken";
 
-export function refreshToken(req: Request, res: Response) {
-  const { refreshToken } = req.body;
-
-  if (!refreshToken)
-    return res.status(401).json({ Error: "Refresh token é necessário" });
-
+export async function refreshToken(token: string) {
   try {
-    const decode = verifyRefreshJWT(refreshToken);
+    const decode = (await verifyRefreshJWT(token)) as JwtPayload;
 
-    const newToken = createJWT(decode as JwtPayload);
+    const newToken = await createJWT(decode);
 
-    return res.json({ accessToken: newToken });
+    return newToken;
   } catch (err: any) {
-    return res.status(403).json({ Error: "Refresh Token inválido" });
+    throw new Error("Refresh token expirado");
   }
 }
