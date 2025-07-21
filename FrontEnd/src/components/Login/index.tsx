@@ -45,14 +45,13 @@ function Login() {
       const user = { email, password };
 
       const result = await loginAPIAxios(user);
-      console.log(result);
 
       const { token, refreshToken } = result.data;
 
       Cookies.set("token", token);
       Cookies.set("RefreshToken", refreshToken);
 
-      console.log("login realizado com sucesso");
+      navigate("/");
     } catch (err: any) {
       alert(err.message);
     }

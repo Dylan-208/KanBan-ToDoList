@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "../Card/Index";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import Cookies from "js-cookie";
 
 import {
   BackImage,
@@ -25,6 +26,10 @@ import {
   getTaskById,
   getTasksAxios,
   updatedTaskAxios,
+  getTaskAPI,
+  updatedTaskAPI,
+  createTaskAPI,
+  deleteTaskAPI,
 } from "../../api/axios";
 import type { Tasks } from "../../types/interfaces";
 import ReactModal from "react-modal";
@@ -36,7 +41,7 @@ function Session() {
   const { tasks, setTasks } = useTaskContext();
 
   useEffect(() => {
-    getTaskApi();
+    getTask();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,9 +54,20 @@ function Session() {
   });
   const [modal, setModal] = useState<boolean>(false);
 
-  function getTaskApi() {
-    const result = getTasksAxios();
-    setTasks(result.data);
+  async function getTask() {
+    const token = Cookies.get("token");
+    const refreshToken = Cookies.get("RefreshToken");
+    if (!token) {
+      const result = getTasksAxios();
+      return setTasks(result.data);
+    }
+
+    try {
+      const result = await getTaskAPI(token, refreshToken as string);
+      return setTasks(result.data);
+    } catch (err: any) {
+      throw new Error("Tarefas não encontradas", err.message);
+    }
   }
 
   function addTaskModal() {
@@ -66,10 +82,80 @@ function Session() {
     return;
   }
 
-  function updatedTask() {
-    const result = updatedTaskAxios(form.id, form);
-    console.log(result);
-    setTasks(result);
+  async function updatedTask() {
+    console.log(tasks);
+    const token = Cookies.get("token");
+    const refreshToken = Cookies.get("RefreshToken");
+    if (!token) {
+      const result = updatedTaskAxios(form.id, form);
+      setTasks(result);
+      setModal(false);
+      setForm({
+        id: "",
+        titulo: "",
+        description: "",
+        relevance: "",
+        status: "",
+      });
+      return;
+    }
+    try {
+      const result = await updatedTaskAPI(token, refreshToken as string, form);
+      setTasks(result.data);
+      setModal(false);
+      setForm({
+        id: "",
+        titulo: "",
+        description: "",
+        relevance: "",
+        status: "",
+      });
+
+      return;
+    } catch (err: any) {
+      throw new Error("Tarefas não encontradas", err.message);
+    }
+  }
+
+  async function deleteTask(id: string) {
+    const token = Cookies.get("token");
+    const refreshToken = Cookies.get("RefreshToken");
+
+    if (!token) {
+      const tasksDelete = deleteTaskAxios(id);
+      setTasks(tasksDelete);
+      return;
+    }
+
+    await deleteTaskAPI(token, refreshToken as string, id);
+
+    return getTask();
+  }
+
+  async function addTaskApi() {
+    const token = Cookies.get("token");
+    const refreshToken = Cookies.get("RefreshToken");
+
+    if (!token) {
+      const newTask = { ...form, id: (tasks.length + 1).toString() };
+
+      const result = addTaskAxios(newTask);
+      setTasks(result);
+      setModal(false);
+      setForm({
+        id: "",
+        titulo: "",
+        description: "",
+        relevance: "",
+        status: "",
+      });
+
+      return;
+    }
+
+    const newTask = { ...form };
+
+    await createTaskAPI(token, refreshToken as string, newTask);
     setModal(false);
     setForm({
       id: "",
@@ -78,30 +164,8 @@ function Session() {
       relevance: "",
       status: "",
     });
-    return;
-  }
 
-  function deleteTask(id: string) {
-    const tasksDelete = deleteTaskAxios(id);
-    setTasks(tasksDelete);
-    return;
-  }
-
-  function addTaskApi() {
-    const newTask = { ...form, id: (tasks.length + 1).toString() };
-
-    const result = addTaskAxios(newTask);
-    setTasks(result);
-    setModal(false);
-    setForm({
-      id: "",
-      titulo: "",
-      description: "",
-      relevance: "",
-      status: "",
-    });
-
-    return;
+    getTask();
   }
 
   function fillForm(id: string) {

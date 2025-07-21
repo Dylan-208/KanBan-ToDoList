@@ -12,10 +12,24 @@ import {
   SideUser,
 } from "./style";
 import Cookies from "js-cookie";
-import { getTasksAxios } from "../../api/axios";
+import { getTasksAxios, getDataUserAPI } from "../../api/axios";
 import { useTaskContext } from "../../context/useTaskContex";
 import type { Tasks } from "../../types/interfaces";
 import { useNavigate } from "react-router";
+import { jwtDecode } from "jwt-decode";
+
+interface TokenPayload {
+  id: string;
+  email: string;
+  exp: number;
+  iat: number;
+}
+
+export interface IDataUser {
+  id: string;
+  name: string;
+  email: string;
+}
 
 function Hearder() {
   const { tasks, setTasks } = useTaskContext();
@@ -25,7 +39,9 @@ function Hearder() {
     getTasksAxios().data
   );
   const [search, setSearch] = useState<string>("");
-  const token = Cookies.get("token");
+  const [dataUser, setDataUser] = useState<IDataUser | null>(null);
+  const [token, setToken] = useState(Cookies.get("token"));
+  const [refreshToken, setRefreshToken] = useState(Cookies.get("RefreshToken"));
 
   function searchTasks(text: string) {
     if (text.trim() === "") {
@@ -52,10 +68,37 @@ function Hearder() {
     };
   }
 
+  function userExit() {
+    Cookies.remove("token");
+    Cookies.remove("RefreshToken");
+    setToken("");
+    setRefreshToken("");
+    location.reload();
+  }
+
   useEffect(() => {
     searchTasks(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        if (token || refreshToken) {
+          const decodedToken = jwtDecode<TokenPayload>(token as string);
+          //const decodedRefreshToken = jwtDecode<TokenPayload>(refreshToken as string);
+
+          const userData = await getDataUserAPI(decodedToken.id);
+
+          setDataUser(userData.data);
+        }
+      } catch (err: any) {
+        throw new Error("Error ao buscar usuário: ", err.message);
+      }
+    };
+
+    getUserData();
+  }, []);
   return (
     <>
       <ContainerHeader>
@@ -67,18 +110,27 @@ function Hearder() {
           value={search}
           placeholder="Pesquise sua tarefa"
         />
-        {token && (
+        {(token || refreshToken) && (
           <SideUser>
             {/*//TODO Add iniciais do usuário*/}
-            <DivPhoto></DivPhoto>
+            <DivPhoto>
+              {dataUser?.name
+                .split(" ")
+                .filter(Boolean)
+                .map((name) => name[0])
+                .join("")
+                .toUpperCase()}
+            </DivPhoto>
             {/*//TODO Puxar informações do Usuário*/}
-            <NameUser>Dylan Santos</NameUser>
+            <NameUser>{dataUser?.name}</NameUser>
+            <ButtonLogin onClick={() => userExit()}>Sair</ButtonLogin>
           </SideUser>
         )}
-
-        <SideUser>
-          <ButtonLogin onClick={() => navigate("/login")}>Login</ButtonLogin>
-        </SideUser>
+        {!token && !refreshToken && (
+          <SideUser>
+            <ButtonLogin onClick={() => navigate("/login")}>Login</ButtonLogin>
+          </SideUser>
+        )}
       </ContainerHeader>
       <ContainerRelevance>
         <ItemRelevance>

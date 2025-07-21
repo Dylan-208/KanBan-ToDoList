@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { IDataUser } from "../components/Header/Index";
 import type { Tasks } from "../types/interfaces";
 import axios from "axios";
+import type { AxiosResponse } from "axios";
 
 let dados = [
   {
@@ -82,7 +84,11 @@ export const deleteTaskAxios = (id: string) => {
   return dados;
 };
 
-export async function loginAPIAxios(data: ILogin) {
+//-------------------------------------------------------------------------------
+
+export async function loginAPIAxios(
+  data: ILogin
+): Promise<AxiosResponse<ILoginResponse>> {
   try {
     const result = await axios.post<ILoginResponse>(
       `${import.meta.env.VITE_URL_BASE}/login`,
@@ -98,4 +104,124 @@ export async function loginAPIAxios(data: ILogin) {
   } catch (err: any) {
     throw new Error(`Error: ${err.message}`);
   }
+}
+
+export async function getDataUserAPI(
+  id: string
+): Promise<AxiosResponse<IDataUser>> {
+  try {
+    const result = await axios.get<IDataUser>(
+      `${import.meta.env.VITE_URL_BASE}/user/${id}`
+    );
+    return result;
+  } catch (err: any) {
+    throw new Error(`Error: ${err.message}`);
+  }
+}
+
+export async function getTaskAPI(
+  token: string,
+  refreshToken: string
+): Promise<AxiosResponse<Tasks[]>> {
+  try {
+    const result = await axios.get<Tasks[]>(
+      `${import.meta.env.VITE_URL_BASE}/task`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          "x-refresh-token": refreshToken,
+        },
+      }
+    );
+
+    if (!result) throw new Error("Dados não encontrados");
+
+    return result;
+  } catch (err: any) {
+    throw new Error("Dados não encontrados", err.message);
+  }
+}
+
+export async function updatedTaskAPI(
+  token: string,
+  refreshToken: string,
+  task: Tasks
+) {
+  try {
+    const result = await axios.put(
+      `${import.meta.env.VITE_URL_BASE}/task/`,
+      {
+        id: task.id,
+        titulo: task.titulo,
+        description: task.description,
+        relevance: task.relevance,
+        status: task.status,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          "x-refresh-token": refreshToken,
+        },
+      }
+    );
+    console.log(result);
+    return result;
+  } catch (err: any) {
+    throw new Error("Error", err.message);
+  }
+}
+
+export async function createTaskAPI(
+  token: string,
+  refreshToken: string,
+  task: Tasks
+): Promise<AxiosResponse<Tasks>> {
+  try {
+    const result = await axios.post<Tasks>(
+      `${import.meta.env.VITE_URL_BASE}/task`,
+      {
+        titulo: task.titulo,
+        description: task.description,
+        relevance: task.relevance,
+        status: task.status,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          "x-refresh-token": refreshToken,
+        },
+      }
+    );
+
+    return result;
+  } catch (err: any) {
+    throw new Error("Error", err.message);
+  }
+}
+
+export async function deleteTaskAPI(
+  token: string,
+  refreshToken: string,
+  id_task: string
+): Promise<AxiosResponse<Tasks>> {
+  try {
+    const result = await axios.delete<Tasks>(
+      `${import.meta.env.VITE_URL_BASE}/task/${id_task}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          "x-refresh-token": refreshToken,
+        },
+        params: {
+          id: id_task,
+        },
+      }
+    );
+
+    return result;
+  } catch (err: any) {
+    throw new Error("Error", err.message);
+  }
+
+  return result;
 }

@@ -26,7 +26,6 @@ export const Search = styled.input`
 
 export const SearchIcon = styled(IoSearch)`
   position: absolute;
-  margin-top: 60px;
   margin-left: 15px;
   color: #0077b6;
   font-size: 20px;
@@ -36,10 +35,11 @@ export const DivPhoto = styled.div`
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  background-color: red;
+  background-color: #024388ff;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
 `;
 
 export const NameUser = styled.p`
