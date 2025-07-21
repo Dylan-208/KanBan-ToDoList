@@ -30,6 +30,7 @@ import {
   updatedTaskAPI,
   createTaskAPI,
   deleteTaskAPI,
+  getTaskByIdAPI,
 } from "../../api/axios";
 import type { Tasks } from "../../types/interfaces";
 import ReactModal from "react-modal";
@@ -83,9 +84,9 @@ function Session() {
   }
 
   async function updatedTask() {
-    console.log(tasks);
     const token = Cookies.get("token");
     const refreshToken = Cookies.get("RefreshToken");
+
     if (!token) {
       const result = updatedTaskAxios(form.id, form);
       setTasks(result);
@@ -101,7 +102,7 @@ function Session() {
     }
     try {
       const result = await updatedTaskAPI(token, refreshToken as string, form);
-      setTasks(result.data);
+
       setModal(false);
       setForm({
         id: "",
@@ -168,14 +169,28 @@ function Session() {
     getTask();
   }
 
-  function fillForm(id: string) {
-    const taskUpdate = getTaskById(id);
-    if (taskUpdate) {
-      setModal(true);
-      setForm(taskUpdate);
+  async function fillForm(id: string) {
+    const token = Cookies.get("token");
+    const refreshToken = Cookies.get("RefreshToken");
 
-      return;
+    if (!token) {
+      const taskUpdate = getTaskById(id);
+      if (taskUpdate) {
+        setModal(true);
+        setForm(taskUpdate);
+
+        return;
+      }
     }
+
+    const taskUpdate = await getTaskByIdAPI(
+      token as string,
+      refreshToken as string,
+      id
+    );
+    setModal(true);
+
+    setForm(taskUpdate.data);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

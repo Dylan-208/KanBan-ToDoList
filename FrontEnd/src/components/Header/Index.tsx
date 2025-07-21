@@ -112,7 +112,6 @@ function Hearder() {
         />
         {(token || refreshToken) && (
           <SideUser>
-            {/*//TODO Add iniciais do usuário*/}
             <DivPhoto>
               {dataUser?.name
                 .split(" ")
@@ -121,7 +120,6 @@ function Hearder() {
                 .join("")
                 .toUpperCase()}
             </DivPhoto>
-            {/*//TODO Puxar informações do Usuário*/}
             <NameUser>{dataUser?.name}</NameUser>
             <ButtonLogin onClick={() => userExit()}>Sair</ButtonLogin>
           </SideUser>

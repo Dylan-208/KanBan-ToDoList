@@ -65,7 +65,7 @@ export const getTasksAxios = () => {
 
 export const addTaskAxios = (data: Tasks) => {
   dados.push(data);
-  console.log(dados);
+
   return dados;
 };
 
@@ -142,6 +142,30 @@ export async function getTaskAPI(
   }
 }
 
+export async function getTaskByIdAPI(
+  token: string,
+  refreshToken: string,
+  id_task: string
+): Promise<AxiosResponse<Tasks>> {
+  try {
+    const result = await axios.get<Tasks>(
+      `${import.meta.env.VITE_URL_BASE}/task/${id_task}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          "x-refresh-token": refreshToken,
+        },
+      }
+    );
+
+    if (!result) throw new Error("Dados não encontrados");
+
+    return result;
+  } catch (err: any) {
+    throw new Error("Dados não encontrados", err.message);
+  }
+}
+
 export async function updatedTaskAPI(
   token: string,
   refreshToken: string,
@@ -149,7 +173,7 @@ export async function updatedTaskAPI(
 ) {
   try {
     const result = await axios.put(
-      `${import.meta.env.VITE_URL_BASE}/task/`,
+      `${import.meta.env.VITE_URL_BASE}/task/${task.id}`,
       {
         id: task.id,
         titulo: task.titulo,
@@ -164,7 +188,6 @@ export async function updatedTaskAPI(
         },
       }
     );
-    console.log(result);
     return result;
   } catch (err: any) {
     throw new Error("Error", err.message);
@@ -222,6 +245,4 @@ export async function deleteTaskAPI(
   } catch (err: any) {
     throw new Error("Error", err.message);
   }
-
-  return result;
 }
