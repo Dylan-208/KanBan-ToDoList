@@ -10,11 +10,10 @@ class UserService {
     const verifyEmail = await this._userRepository.getByEmail(data.email);
     if (!verifyEmail) {
       const result = await this._userRepository.create(data);
-      result.password = "";
-      const token = createJWT(result);
-      return {
-        token: token,
-      };
+      const { id, email } = result;
+
+      const token = createJWT({ id, email });
+      return token;
     }
 
     throw new Error("Email já existente no banco de dados");
