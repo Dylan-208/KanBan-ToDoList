@@ -2,7 +2,6 @@
 import type { IDataUser } from "../components/Header/Index";
 import type { Tasks } from "../types/interfaces";
 import axios from "axios";
-import type { AxiosResponse } from "axios";
 
 let dados = [
   {
@@ -57,6 +56,12 @@ interface ILoginResponse {
   refreshToken: string;
 }
 
+interface INewUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export const getTasksAxios = () => {
   return {
     data: dados,
@@ -86,9 +91,7 @@ export const deleteTaskAxios = (id: string) => {
 
 //-------------------------------------------------------------------------------
 
-export async function loginAPIAxios(
-  data: ILogin
-): Promise<AxiosResponse<ILoginResponse>> {
+export async function loginAPIAxios(data: ILogin): Promise<ILoginResponse> {
   try {
     const result = await axios.post<ILoginResponse>(
       `${import.meta.env.VITE_URL_BASE}/login`,
@@ -100,20 +103,18 @@ export async function loginAPIAxios(
 
     if (!result.data.token) throw new Error("Email ou senha inválidos");
 
-    return result;
+    return result.data;
   } catch (err: any) {
     throw new Error(`Error: ${err.message}`);
   }
 }
 
-export async function getDataUserAPI(
-  id: string
-): Promise<AxiosResponse<IDataUser>> {
+export async function getDataUserAPI(id: string): Promise<IDataUser> {
   try {
     const result = await axios.get<IDataUser>(
       `${import.meta.env.VITE_URL_BASE}/user/${id}`
     );
-    return result;
+    return result.data;
   } catch (err: any) {
     throw new Error(`Error: ${err.message}`);
   }
@@ -122,7 +123,7 @@ export async function getDataUserAPI(
 export async function getTaskAPI(
   token: string,
   refreshToken: string
-): Promise<AxiosResponse<Tasks[]>> {
+): Promise<Tasks[]> {
   try {
     const result = await axios.get<Tasks[]>(
       `${import.meta.env.VITE_URL_BASE}/task`,
@@ -136,7 +137,7 @@ export async function getTaskAPI(
 
     if (!result) throw new Error("Dados não encontrados");
 
-    return result;
+    return result.data;
   } catch (err: any) {
     throw new Error("Dados não encontrados", err.message);
   }
@@ -146,7 +147,7 @@ export async function getTaskByIdAPI(
   token: string,
   refreshToken: string,
   id_task: string
-): Promise<AxiosResponse<Tasks>> {
+) {
   try {
     const result = await axios.get<Tasks>(
       `${import.meta.env.VITE_URL_BASE}/task/${id_task}`,
@@ -198,7 +199,7 @@ export async function createTaskAPI(
   token: string,
   refreshToken: string,
   task: Tasks
-): Promise<AxiosResponse<Tasks>> {
+) {
   try {
     const result = await axios.post<Tasks>(
       `${import.meta.env.VITE_URL_BASE}/task`,
@@ -226,7 +227,7 @@ export async function deleteTaskAPI(
   token: string,
   refreshToken: string,
   id_task: string
-): Promise<AxiosResponse<Tasks>> {
+) {
   try {
     const result = await axios.delete<Tasks>(
       `${import.meta.env.VITE_URL_BASE}/task/${id_task}`,
@@ -244,5 +245,24 @@ export async function deleteTaskAPI(
     return result;
   } catch (err: any) {
     throw new Error("Error", err.message);
+  }
+}
+
+export async function registerUserAPI(dataUser: INewUser) {
+  try {
+    const result = await axios.post<ILoginResponse>(
+      `${import.meta.env.VITE_URL_BASE}/user`,
+      {
+        name: dataUser.name,
+        email: dataUser.email,
+        password: dataUser.password,
+      }
+    );
+
+    return result;
+  } catch (err: any) {
+    const message =
+      err.response?.data?.error || err.response?.data?.message || err.message;
+    throw new Error(message);
   }
 }

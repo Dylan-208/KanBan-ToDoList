@@ -20,7 +20,7 @@ import {
   TituloEmail,
 } from "./style";
 import { useNavigate } from "react-router";
-import { loginAPIAxios } from "../../api/axios";
+import { loginAPIAxios, registerUserAPI } from "../../api/axios";
 import Cookies from "js-cookie";
 
 type User = {
@@ -45,6 +45,25 @@ function Login() {
       const user = { email, password };
 
       const result = await loginAPIAxios(user);
+
+      const { token, refreshToken } = result;
+
+      Cookies.set("token", token);
+      Cookies.set("RefreshToken", refreshToken);
+
+      navigate("/");
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
+
+  async function registerUser() {
+    try {
+      const dataUser = { ...newUser };
+
+      const result = await registerUserAPI(dataUser);
+
+      if (!result.data) throw new Error("Error");
 
       const { token, refreshToken } = result.data;
 
@@ -122,51 +141,63 @@ function Login() {
             </ContainerLogin>
 
             <ContainerSingIn $background={loginSelect}>
-              <DivEmail $side={loginSelect}>
-                <IconUser />
-                <LineSeparator />
-                <ContainerEmailAddress>
-                  <TituloEmail>Nome Completo</TituloEmail>
-                  <InputEmail
-                    type="text"
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, name: e.target.value })
-                    }
-                    value={newUser.name}
-                  />
-                </ContainerEmailAddress>
-              </DivEmail>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  return registerUser();
+                }}
+              >
+                <DivEmail $side={loginSelect}>
+                  <IconUser />
+                  <LineSeparator />
+                  <ContainerEmailAddress>
+                    <TituloEmail>Nome Completo</TituloEmail>
+                    <InputEmail
+                      type="text"
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, name: e.target.value })
+                      }
+                      value={newUser.name}
+                      required
+                    />
+                  </ContainerEmailAddress>
+                </DivEmail>
 
-              <DivEmail $side={loginSelect}>
-                <Iconemail />
-                <LineSeparator />
-                <ContainerEmailAddress>
-                  <TituloEmail>Endereço Email</TituloEmail>
-                  <InputEmail
-                    type="text"
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, email: e.target.value })
-                    }
-                    value={newUser.email}
-                  />
-                </ContainerEmailAddress>
-              </DivEmail>
+                <DivEmail $side={loginSelect}>
+                  <Iconemail />
+                  <LineSeparator />
+                  <ContainerEmailAddress>
+                    <TituloEmail>Endereço Email</TituloEmail>
+                    <InputEmail
+                      type="text"
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, email: e.target.value })
+                      }
+                      value={newUser.email}
+                      required
+                    />
+                  </ContainerEmailAddress>
+                </DivEmail>
 
-              <DivEmail $side={loginSelect}>
-                <IconPassword />
-                <LineSeparator />
-                <ContainerEmailAddress>
-                  <TituloEmail>Senha</TituloEmail>
-                  <InputEmail
-                    type="text"
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, password: e.target.value })
-                    }
-                    value={newUser.password}
-                  />
-                </ContainerEmailAddress>
-              </DivEmail>
-              <ButtonEnter $side={loginSelect}>Cadastrar</ButtonEnter>
+                <DivEmail $side={loginSelect}>
+                  <IconPassword />
+                  <LineSeparator />
+                  <ContainerEmailAddress>
+                    <TituloEmail>Senha</TituloEmail>
+                    <InputEmail
+                      type="text"
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, password: e.target.value })
+                      }
+                      value={newUser.password}
+                      required
+                    />
+                  </ContainerEmailAddress>
+                </DivEmail>
+                <ButtonEnter $side={loginSelect} type="submit">
+                  Cadastrar
+                </ButtonEnter>
+              </form>
             </ContainerSingIn>
           </Container>
         </DivColumn>

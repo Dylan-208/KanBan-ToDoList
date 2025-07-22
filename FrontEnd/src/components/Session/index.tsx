@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Card from "../Card/Index";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
@@ -65,7 +66,7 @@ function Session() {
 
     try {
       const result = await getTaskAPI(token, refreshToken as string);
-      return setTasks(result.data);
+      return setTasks(result);
     } catch (err: any) {
       throw new Error("Tarefas não encontradas", err.message);
     }
@@ -101,7 +102,7 @@ function Session() {
       return;
     }
     try {
-      const result = await updatedTaskAPI(token, refreshToken as string, form);
+      await updatedTaskAPI(token, refreshToken as string, form);
 
       setModal(false);
       setForm({
@@ -193,7 +194,6 @@ function Session() {
     setForm(taskUpdate.data);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onDragEnd(result: any) {
     const { source, destination } = result;
 

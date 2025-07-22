@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import {
   ButtonLogin,
@@ -90,7 +91,7 @@ function Hearder() {
 
           const userData = await getDataUserAPI(decodedToken.id);
 
-          setDataUser(userData.data);
+          setDataUser(userData);
         }
       } catch (err: any) {
         throw new Error("Error ao buscar usuário: ", err.message);
