@@ -10,7 +10,7 @@ const router = Router();
 //User
 router.post("/user", userControllerFactory.create);
 
-router.get("/user", userControllerFactory.getAll);
+router.get("/user", autenticMiddleware.user, userControllerFactory.getAll);
 
 router.put("/user/:id", autenticMiddleware.user, userControllerFactory.update);
 
