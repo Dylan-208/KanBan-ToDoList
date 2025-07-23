@@ -113,6 +113,8 @@ function Session() {
         status: "",
       });
 
+      location.reload();
+
       return;
     } catch (err: any) {
       throw new Error("Tarefas não encontradas", err.message);
